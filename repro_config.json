@@ -1,0 +1,101 @@
+{
+    "suite_name": "devyn-standalone",
+    "description": "Standalone reproducibility config for publishing devyn_code outside DynSyn",
+    "conda_executable": "conda",
+    "run_entry": "run",
+    "standalone_hints": [
+        "For ostrich task, set DEVYN_CODE_OSTRICH_ROOT to a folder containing msmodel_gym (PAPER_CODE_OSTRICH_ROOT is also accepted for compatibility), or keep third_party/FullBody-Model under repo root.",
+        "If msmodel_gym expects ../../Models/ostrich/ostrich.xml, preserve the third_party/FullBody-Model + third_party/Models relative layout."
+    ],
+    "task_aliases": {
+        "myoleg": "myoleg-stair",
+        "myowalk": "myoleg-stair",
+        "myoleg-stair": "myoleg-stair",
+        "hand": "myohand-reorient",
+        "myohand": "myohand-reorient",
+        "myohand-reorient": "myohand-reorient",
+        "humenv": "humenv-jump",
+        "humenv-jump": "humenv-jump",
+        "humanoidbench": "h1-run",
+        "h1": "h1-run",
+        "h1-run": "h1-run",
+        "g1": "g1-run",
+        "g1-run": "g1-run",
+        "ostrich": "ostrich"
+    },
+    "task_to_env": {
+        "myoleg-stair": "devyn_myo",
+        "myohand-reorient": "devyn_myo",
+        "ostrich": "devyn_myo",
+        "humenv-jump": "devyn_smpl",
+        "h1-run": "devyn_humanoidbench",
+        "g1-run": "devyn_humanoidbench"
+    },
+    "envs": {
+        "devyn_myo": {
+            "python": "3.9",
+            "conda_packages": [
+                "pip"
+            ],
+            "pip_packages": [
+                "stable-baselines3[extra]==2.3.2",
+                "sb3-contrib==2.3.0",
+                "gymnasium==0.29.1",
+                "myosuite==2.8.4",
+                "moviepy==1.0.3",
+                "pyyaml==6.0.2",
+                "kmedoids==0.5.2",
+                "wandb==0.18.5"
+            ],
+            "editable_install_repo": false,
+            "local_editable_paths": []
+        },
+        "devyn_smpl": {
+            "python": "3.10",
+            "conda_packages": [
+                "pip"
+            ],
+            "pip_install_steps": [
+                {
+                    "packages": [
+                        "stable-baselines3[extra]==2.3.2",
+                        "sb3-contrib==2.3.0",
+                        "gymnasium==0.29.1",
+                        "git+https://github.com/facebookresearch/HumEnv.git",
+                        "moviepy==1.0.3",
+                        "pyyaml==6.0.2",
+                        "wandb==0.18.5"
+                    ]
+                },
+                {
+                    "index_url": "https://download.pytorch.org/whl/cu121",
+                    "packages": [
+                        "torch==2.5.1",
+                        "torchvision==0.20.1",
+                        "torchaudio==2.5.1"
+                    ]
+                }
+            ],
+            "editable_install_repo": false,
+            "local_editable_paths": []
+        },
+        "devyn_humanoidbench": {
+            "python": "3.10",
+            "conda_packages": [
+                "pip"
+            ],
+            "pip_packages": [
+                "stable-baselines3[extra]==2.3.2",
+                "sb3-contrib==2.3.0",
+                "gymnasium==0.29.1",
+                "moviepy==1.0.3",
+                "pyyaml==6.0.2",
+                "wandb==0.18.5"
+            ],
+            "editable_install_repo": false,
+            "local_editable_paths": [
+                "third_party/humanoid-bench"
+            ]
+        }
+    }
+}

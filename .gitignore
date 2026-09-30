@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+
+# Virtual environments (created by setup_venv_min.sh / conda)
+.venv*/
+venv/
+
+# Training outputs
+output/
+wandb/
+logs/
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+
+# Test / tool caches
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
