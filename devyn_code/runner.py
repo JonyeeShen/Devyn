@@ -177,7 +177,7 @@ def main() -> None:
     parser = build_arg_parser()
     args = parser.parse_args()
 
-    repo_root = Path(__file__).resolve().parents[2]
+    repo_root = Path(__file__).resolve().parents[1]
     output_root = (repo_root / args.output_root).resolve()
 
     config = get_run_config(task=args.task, model=args.model, seed=args.seed, device=args.device)

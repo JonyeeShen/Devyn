@@ -152,7 +152,7 @@ conda run -n devyn_humanoidbench python -m pip install -e ./third_party/humanoid
 - Main algorithm implementation: [devyn_code/algorithms/devyn_unified_sac.py](devyn_code/algorithms/devyn_unified_sac.py)
 - Environment bootstrap/wrappers: [devyn_code/envs](devyn_code/envs)
 - Vendored/paper-asset benchmarks (HumanoidBench, Ostrich model): [third_party](third_party)
-- Outputs: [output](output)/`<model>/<task>/<seed>/`
+- Outputs: [devyn_code/output](devyn_code/output)/`<model>/<task>/<seed>/` (override with `--output-root`)
 
 ## Third-Party Code
 

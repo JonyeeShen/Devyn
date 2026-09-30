@@ -186,7 +186,7 @@ def setup_env(
         run_cmd(create_cmd, cwd=repo_root, dry_run=dry_run)
 
     run_cmd(
-        [conda_executable, "run", "-n", env_name, "python", "-m", "pip", "install", "--upgrade", "pip"],
+        [conda_executable, "run", "--no-capture-output", "-n", env_name, "python", "-m", "pip", "install", "--upgrade", "pip"],
         cwd=repo_root,
         dry_run=dry_run,
     )
@@ -201,7 +201,7 @@ def setup_env(
             if not packages:
                 continue
 
-            pip_cmd = [conda_executable, "run", "-n", env_name, "python", "-m", "pip", "install"]
+            pip_cmd = [conda_executable, "run", "--no-capture-output", "-n", env_name, "python", "-m", "pip", "install"]
             if step.get("index_url"):
                 pip_cmd.extend(["--index-url", step["index_url"]])
             if step.get("extra_index_url"):
@@ -218,14 +218,14 @@ def setup_env(
         pip_packages = env_cfg.get("pip_packages", [])
         if pip_packages:
             run_cmd(
-                [conda_executable, "run", "-n", env_name, "python", "-m", "pip", "install", *pip_packages],
+                [conda_executable, "run", "--no-capture-output", "-n", env_name, "python", "-m", "pip", "install", *pip_packages],
                 cwd=repo_root,
                 dry_run=dry_run,
             )
 
     if env_cfg.get("editable_install_repo", True):
         run_cmd(
-            [conda_executable, "run", "-n", env_name, "python", "-m", "pip", "install", "-e", str(repo_root)],
+            [conda_executable, "run", "--no-capture-output", "-n", env_name, "python", "-m", "pip", "install", "-e", str(repo_root)],
             cwd=repo_root,
             dry_run=dry_run,
         )
@@ -235,7 +235,7 @@ def setup_env(
         if not abs_path.exists():
             raise FileNotFoundError(f"Local editable path does not exist: {abs_path}")
         run_cmd(
-            [conda_executable, "run", "-n", env_name, "python", "-m", "pip", "install", "-e", str(abs_path)],
+            [conda_executable, "run", "--no-capture-output", "-n", env_name, "python", "-m", "pip", "install", "-e", str(abs_path)],
             cwd=repo_root,
             dry_run=dry_run,
         )
@@ -247,7 +247,7 @@ def setup_env(
             print(f"[repro] skip optional local editable path (missing): {abs_path}")
             continue
         run_cmd(
-            [conda_executable, "run", "-n", env_name, "python", "-m", "pip", "install", "-e", str(abs_path)],
+            [conda_executable, "run", "--no-capture-output", "-n", env_name, "python", "-m", "pip", "install", "-e", str(abs_path)],
             cwd=repo_root,
             dry_run=dry_run,
         )
