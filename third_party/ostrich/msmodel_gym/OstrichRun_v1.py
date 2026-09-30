@@ -58,7 +58,7 @@ class OstrichRunEnvV1(MujocoEnv, EzPickle):
         **kwargs
     ):
         # model_path must be abspath
-        model_path = os.path.dirname(__file__) + "/../../Models/ostrich/ostrich.xml"
+        model_path = os.path.dirname(__file__) + "/../assets/ostrich.xml"
         model_path = os.path.abspath(model_path)
 
         # Keep an explicit per-episode step cap for truncation.

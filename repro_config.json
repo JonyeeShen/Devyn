@@ -4,8 +4,8 @@
     "conda_executable": "conda",
     "run_entry": "run",
     "standalone_hints": [
-        "For ostrich task, set DEVYN_CODE_OSTRICH_ROOT to a folder containing msmodel_gym (PAPER_CODE_OSTRICH_ROOT is also accepted for compatibility), or keep third_party/FullBody-Model under repo root.",
-        "If msmodel_gym expects ../../Models/ostrich/ostrich.xml, preserve the third_party/FullBody-Model + third_party/Models relative layout."
+        "For ostrich task, set DEVYN_CODE_OSTRICH_ROOT to a folder containing msmodel_gym (PAPER_CODE_OSTRICH_ROOT is also accepted for compatibility), or keep third_party/ostrich under repo root.",
+        "msmodel_gym expects ../assets/ostrich.xml relative to its own folder, so third_party/ostrich/msmodel_gym and third_party/ostrich/assets must stay siblings."
     ],
     "task_aliases": {
         "myoleg": "myoleg-stair",

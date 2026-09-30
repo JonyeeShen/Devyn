@@ -18,13 +18,13 @@ used here to provide the `h1-run` / `g1-run` tasks (Unitree H1/G1).
   [`repro_config.json`](../repro_config.json) / [`setup_venv_min.sh`](../setup_venv_min.sh)).
 - All credit for this benchmark goes to the original authors.
 
-## `FullBody-Model/` and `Models/`
+## `ostrich/`
 
-The `msmodel_gym` Gymnasium environment (`FullBody-Model/msmodel_gym`) and the MuJoCo
-musculoskeletal Ostrich model/assets (`Models/ostrich`) used for the `ostrich` task are
+The `msmodel_gym` Gymnasium environment (`ostrich/msmodel_gym`) and the MuJoCo
+musculoskeletal Ostrich model/assets (`ostrich/assets`) used for the `ostrich` task are
 part of this project's own code/assets. They live under `third_party/` purely to keep
 the repo root uncluttered, not because they are externally sourced.
 
-The two folders must remain siblings: `msmodel_gym` resolves the MJCF path relative to
-its own file location (`../../Models/ostrich/ostrich.xml`), so moving one without the
-other will break the `ostrich` task.
+The two subfolders must remain siblings: `msmodel_gym` resolves the MJCF path relative
+to its own file location (`../assets/ostrich.xml`), so moving one without the other
+will break the `ostrich` task.

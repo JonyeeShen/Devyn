@@ -36,14 +36,7 @@ def _candidate_ostrich_roots(repo_root: Path) -> list[Path]:
             resolved = (repo_root / resolved).resolve()
         candidates.append(resolved)
 
-    candidates.extend(
-        [
-            (repo_root / "FullBody-Model").resolve(),
-            (repo_root / "devyn_code" / "FullBody-Model").resolve(),
-            (repo_root / "third_party" / "FullBody-Model").resolve(),
-            (repo_root / "third_party_src" / "FullBody-Model").resolve(),
-        ]
-    )
+    candidates.append((repo_root / "third_party" / "ostrich").resolve())
     return candidates
 
 
@@ -67,7 +60,7 @@ def _register_ostrich_env(repo_root: Path) -> None:
     message = (
         "Cannot import msmodel_gym for ostrich task. "
         "Set DEVYN_CODE_OSTRICH_ROOT (or PAPER_CODE_OSTRICH_ROOT) to a directory containing msmodel_gym "
-        "(or keep FullBody-Model under third_party/)."
+        "(or keep third_party/ostrich under repo root)."
     )
     if last_error is not None:
         raise RuntimeError(message) from last_error
