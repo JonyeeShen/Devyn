@@ -2,8 +2,7 @@
 
 This repository contains the code used to reproduce the results from the paper:
 
-> **High-Dimensional Robotic Reinforcement Learning with Developing Synergies**
-> *Paper: coming soon (link will be added once the preprint is available).*
+> **[High-Dimensional Robotic Reinforcement Learning with Developing Synergies](https://neurips.cc/virtual/2026/loc/sydney/poster/151314)**
 
 Compact training entry for all paper models with one unified configuration center.
 
