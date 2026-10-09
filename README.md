@@ -1,6 +1,6 @@
 # Devyn: High-Dimensional Robotic Reinforcement Learning with Developing Synergies
 
-This repository contains the code used to reproduce the results from the paper:
+This repository contains the code used to reproduce the results from the NeurIPS 2026 paper:
 
 > **[High-Dimensional Robotic Reinforcement Learning with Developing Synergies](https://neurips.cc/virtual/2026/loc/sydney/poster/151314)**
 
