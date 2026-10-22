@@ -6,6 +6,8 @@ This repository contains the code used to reproduce the results from the NeurIPS
 
 Compact training entry for all paper models with one unified configuration center.
 
+**[Project page](https://jonyeeshen.github.io/Devyn/)** · [Website maintenance](website/README.md)
+
 ## What This Provides
 
 - A single reproducibility utility: `./repro.py`
