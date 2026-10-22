@@ -1,7 +1,7 @@
 :root {
   --paper:#141416; --ink:#eeedf0; --muted:#b0aeb8; --accent:#d8b46a;
   --line:#38383f; --panel:#1d1d21; --panel2:#27272d; --blue:#8fa4c1;
-  --green:var(--accent); --lime:var(--accent); --clay:#b9988b;
+  --green:var(--accent); --lime:var(--accent); --clay:#cf9292; --lattice:#b0a0d5;
 
   --space-1:8px; --space-2:16px; --space-3:24px; --space-4:32px; --space-5:48px; --space-6:64px;
 }
@@ -181,6 +181,11 @@ input[type=range] { width:100%; accent-color:var(--accent); cursor:pointer; }
 .legend>span:before { content:''; width:18px; height:3px; display:inline-block; vertical-align:middle; background:var(--accent); margin-right:8px; }
 .legend>.sac:before { background:var(--blue); }
 .legend>.dynsyn:before { background:var(--clay); }
+.legend>.lattice:before { background:var(--lattice); }
+.rl-legend { flex-wrap:wrap; gap:10px 22px; }
+.rl-legend>.sac:before { height:0; background:none; border-top:3px dashed var(--blue); }
+.rl-legend>.dynsyn:before { height:0; background:none; border-top:3px dotted var(--clay); }
+.rl-legend>.lattice:before { background:linear-gradient(to right,var(--lattice) 0 45%,transparent 45% 60%,var(--lattice) 60% 70%,transparent 70% 85%,var(--lattice) 85%); }
 .small-note { color:var(--muted);  line-height:1.7; }
 .section-head .small-note { margin-top:12px; }
 .main-plots { display:grid; grid-template-columns:1fr 1fr; gap:40px 48px; margin-bottom:32px; }

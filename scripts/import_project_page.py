@@ -80,7 +80,7 @@ def main():
     tasks = []
     for task in curves['tasks']:
         value = {k: task[k] for k in ['task', 'title', 'configured_plot_budget', 'steps', 'curve_protocol', 'std_ddof', 'interpolation']}
-        value['methods'] = {k: {field: values[field] for field in ['n_seeds', 'mean', 'std']} for k, values in task['methods'].items()}
+        value['methods'] = {k: {field: values[field] for field in ['n_seeds', 'mean', 'std', 'source_type']} for k, values in task['methods'].items()}
         tasks.append(value)
     save('main-curves.json', {'metric': 'Training episode return', 'smoothing': 'Trailing 100 completed episodes per seed', 'aggregation': 'Mean and standard deviation across five seeds; std_ddof records the per-task estimator', 'tasks': tasks})
 

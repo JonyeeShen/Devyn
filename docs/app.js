@@ -1,6 +1,7 @@
 'use strict';
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
-const C={ours:'#d8b46a',sac:'#8fa4c1',dynsyn:'#b9988b',grid:'#36363d',text:'#aaaab3'};
+const theme=getComputedStyle(document.documentElement),themeColor=name=>theme.getPropertyValue(name).trim();
+const C={ours:themeColor('--accent'),sac:themeColor('--blue'),dynsyn:themeColor('--clay'),lattice:themeColor('--lattice'),grid:'#36363d',text:'#aaaab3'};
 const ns='http://www.w3.org/2000/svg';
 function el(t,a,text){const e=document.createElementNS(ns,t);Object.entries(a).forEach(([k,v])=>e.setAttribute(k,v));if(text!==undefined)e.textContent=text;return e;}
 function active(buttons,current){buttons.forEach(b=>{b.classList.toggle('active',b===current);b.setAttribute('aria-pressed',String(b===current));});}
@@ -28,7 +29,7 @@ function chart(svg,series,xmax,opts={}){svg._chartArgs=[series,xmax,opts];svg.da
  for(let v=ymin;v<=ymax+unit*.01;v+=unit){const yy=y(v*div);svg.append(el('line',{x1:L,x2:W-R,y1:yy,y2:yy,stroke:C.grid,'stroke-width':1}));svg.append(el('text',{x:L-12,y:yy+4,'text-anchor':'end',fill:C.text,'font-size':14},Number(v.toFixed(1))));}
  for(let i=0;i<=3;i++){const v=xmax*i/3;svg.append(el('text',{x:x(v),y:H-21,'text-anchor':'middle',fill:C.text,'font-size':14},Number((v/1e6).toFixed(1))+'M'));}
  svg.append(el('text',{x:W/2,y:H-2,'text-anchor':'middle',fill:C.text,'font-size':13},opts.xlabel||'Environment transitions'));
- series.forEach(s=>{const pts=s.points,area=pts.map((p,i)=>(i?'L':'M')+x(p.x)+','+y(p.mean+p.sd)).join(' ')+pts.slice().reverse().map(p=>'L'+x(p.x)+','+y(p.mean-p.sd)).join(' ')+'Z',line=pts.map((p,i)=>(i?'L':'M')+x(p.x)+','+y(p.mean)).join(' ');svg.append(el('path',{d:area,fill:s.color,opacity:.15}));svg.append(el('path',{d:line,fill:'none',stroke:s.color,'stroke-width':2.7,'stroke-linejoin':'round'}));});
+ series.forEach(s=>{const pts=s.points,area=pts.map((p,i)=>(i?'L':'M')+x(p.x)+','+y(p.mean+p.sd)).join(' ')+pts.slice().reverse().map(p=>'L'+x(p.x)+','+y(p.mean-p.sd)).join(' ')+'Z',line=pts.map((p,i)=>(i?'L':'M')+x(p.x)+','+y(p.mean)).join(' ');svg.append(el('path',{d:area,fill:s.color,opacity:s.bandOpacity??.15}));svg.append(el('path',{d:line,fill:'none',stroke:s.color,'stroke-width':s.width||2.7,'stroke-dasharray':s.dash||'none','stroke-linejoin':'round','data-method':s.method||''}));});
 }
 let results,transferData;
 let chartResizeTimer;
@@ -36,7 +37,19 @@ window.addEventListener('resize',()=>{clearTimeout(chartResizeTimer);chartResize
 function testTable(step){const rows=results.test.filter(r=>r.global_steps===step),keys=['success_percent','coverage_percent','empjpe_mm'];$('#test-table').innerHTML='<table><caption class="sr-only">test108 at '+step/1e6+'M transitions</caption><thead><tr><th>Method</th><th>Success ↑<br>%</th><th>Coverage ↑<br>%</th><th>EMPJPE ↓<br>mm</th></tr></thead><tbody>'+rows.map(r=>'<tr class="'+(r.method==='Devyn'?'ours':'')+'"><td>'+(r.method==='Devyn'?'Ours':r.method)+'</td>'+keys.map(k=>'<td>'+r[k+'_mean'].toFixed(2)+'<span class="sd">± '+r[k+'_sample_sd'].toFixed(2)+'</span></td>').join('')+'</tr>').join('')+'</tbody></table>';$('#test-takeaway').textContent=step===1e6?'At 1M: +7.21 percentage points of motion coverage and 12.29 mm lower tracking error than E2E SAC.':'At 3M: 4.11 mm lower mean tracking error than E2E SAC.';}
 $$('[data-step]').forEach(b=>b.onclick=()=>{if(results){active($$('[data-step]'),b);testTable(+b.dataset.step);}});
 fetch('assets/results.json').then(r=>r.json()).then(d=>{results=d;chart($('#training-chart'),['dynsyn','e2e','ours'].map(k=>({color:{ours:C.ours,e2e:C.sac,dynsyn:C.dynsyn}[k],points:d.training[k].map(p=>({...p,x:p.x*1e6}))})),3e6,{xlabel:'Global transitions'});testTable(1e6);}).catch(()=>$('#test-table').textContent='Results are temporarily unavailable.');
-fetch('assets/main-curves.json?v=2').then(r=>r.json()).then(d=>{const order=['g1-run-v0','OstrichRun-v1','h1-run-v0','myoLegStairTerrainWalk-v0'];d.tasks.sort((a,b)=>order.indexOf(a.task)-order.indexOf(b.task)).forEach(t=>{const section=document.createElement('article'),h=document.createElement('h3'),label=document.createElement('div'),divisor=['OstrichRun-v1','myoLegStairTerrainWalk-v0'].includes(t.task)?1000:1;h.textContent={'g1-run-v0':'G1 · Run','h1-run-v0':'H1 · Run','OstrichRun-v1':'Ostrich · Run','myoLegStairTerrainWalk-v0':'MyoLeg · Stair terrain'}[t.task];label.className='plot-unit';label.textContent=divisor===1000?'Episode return (×10³)':'Episode return';const svg=el('svg',{viewBox:'0 0 700 370',role:'img','aria-label':h.textContent+' training returns, five seeds'});section.append(h,label,svg);$('#main-plots').append(section);chart(svg,['SAC','Devyn'].map(n=>({color:n==='Devyn'?C.ours:C.sac,points:t.steps.map((x,i)=>({x,mean:t.methods[n].mean[i],sd:t.methods[n].std[i]}))})),t.configured_plot_budget,{divisor,...(t.task==='myoLegStairTerrainWalk-v0'?{yMax:12,yTick:3}:{})});});}).catch(()=>$('#main-plots').textContent='Training curves are temporarily unavailable.');
+fetch('assets/main-curves.json?v=3').then(r=>r.json()).then(d=>{
+ const order=['g1-run-v0','OstrichRun-v1','h1-run-v0','myoLegStairTerrainWalk-v0'];
+ const styles={SAC:{color:C.sac,dash:'8 5'},DynSyn:{color:C.dynsyn,dash:'3 4'},Lattice:{color:C.lattice,dash:'10 4 2 4'},Devyn:{color:C.ours,width:3}};
+ d.tasks.sort((a,b)=>order.indexOf(a.task)-order.indexOf(b.task)).forEach(t=>{
+  const section=document.createElement('article'),h=document.createElement('h3'),label=document.createElement('div'),divisor=['OstrichRun-v1','myoLegStairTerrainWalk-v0'].includes(t.task)?1000:1;
+  h.textContent={'g1-run-v0':'G1 · Run','h1-run-v0':'H1 · Run','OstrichRun-v1':'Ostrich · Run','myoLegStairTerrainWalk-v0':'MyoLeg · Stair terrain'}[t.task];
+  label.className='plot-unit';label.textContent=divisor===1000?'Episode return (×10³)':'Episode return';
+  const names=Object.keys(styles).filter(n=>t.methods[n]);
+  const svg=el('svg',{viewBox:'0 0 700 370',role:'img','aria-label':h.textContent+' training returns: '+names.join(', ')+', five seeds each','data-task-name':t.task});
+  section.append(h,label,svg);$('#main-plots').append(section);
+  chart(svg,names.map(n=>({...styles[n],method:n,width:styles[n].width||2.1,bandOpacity:.09,points:t.steps.map((x,i)=>({x,mean:t.methods[n].mean[i],sd:t.methods[n].std[i]}))})),t.configured_plot_budget,{divisor,...(t.task==='myoLegStairTerrainWalk-v0'?{yMax:12,yTick:3}:{})});
+ });
+}).catch(()=>$('#main-plots').textContent='Training curves are temporarily unavailable.');
 let synergy,selectedRun=0,evolutionTimer=null;
 function sizeAnchorLabels(){const svg=$('#anchor-example');if(svg)svg.style.setProperty('--anchor-text-scale',520/Math.max(1,svg.getBoundingClientRect().width));}
 sizeAnchorLabels();
