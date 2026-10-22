@@ -87,9 +87,19 @@ def main():
     runs = []
     for run in evolution['runs']:
         value = {k: run[k] for k in ['task', 'title', 'rows', 'columns', 'color_scales']}
-        value['frames'] = [{k: f[k] for k in ['step', 'matrix', 'hoyer_sparsity']} for f in run['frames']]
+        value['frames'] = [
+            {**{k: f[k] for k in ['step', 'matrix', 'elementwise_proxy', 'hoyer_sparsity']},
+             'action_scale': f['tau']}
+            for f in run['frames']
+        ]
         runs.append(value)
-    save('synergy-evolution.json', {'matrix_axes': evolution['matrix_axes'], 'hoyer_sparsity_definition': evolution['hoyer_sparsity_definition'], 'runs': runs})
+    save('synergy-evolution.json', {
+        'default_view': 'proxy',
+        'display_transform': 'Elementwise tanh(omega * U_tilde); initialization uses U0.',
+        'matrix_axes': evolution['matrix_axes'],
+        'hoyer_sparsity_definition': evolution['hoyer_sparsity_definition'],
+        'runs': runs,
+    })
 
     transfer = read('transfer-result.json')
     for bar in transfer['bars']:

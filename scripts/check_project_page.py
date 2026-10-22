@@ -2,6 +2,7 @@
 """Check the static project's dependencies and GitHub Pages subpath compatibility."""
 from html.parser import HTMLParser
 import json
+import math
 from pathlib import Path
 import re
 from urllib.parse import urlsplit
@@ -60,6 +61,23 @@ assert chapters['segments'][0]['start'] == 0
 assert chapters['segments'][-1]['end'] == chapters['duration']
 assert all(a['end'] == b['start'] for a, b in zip(chapters['segments'], chapters['segments'][1:]))
 assert len(json.loads((ROOT/'assets/results.json').read_text())['test']) == 6
+
+# Check the visualization against the exported raw weights and learned scale.
+# Tolerance allows float32 tanh rounding in the checkpoint export.
+synergy = json.loads((ROOT/'assets/synergy-evolution.json').read_text())
+assert synergy['default_view'] == 'proxy'
+for run in synergy['runs']:
+    assert run['color_scales']['proxy'] == {'min': -1, 'max': 1, 'center': 0}
+    for frame in run['frames']:
+        raw, shown, omega = frame['matrix'], frame['elementwise_proxy'], frame['action_scale']
+        assert math.isfinite(omega) and omega > 0
+        assert len(raw) == len(shown) == run['rows']
+        for raw_row, shown_row in zip(raw, shown):
+            assert len(raw_row) == len(shown_row) == run['columns']
+            for weight, value in zip(raw_row, shown_row):
+                assert math.isfinite(weight) and -1 <= value <= 1
+                assert math.isclose(value, math.tanh(omega * weight), abs_tol=2e-7), (
+                    run['task'], frame['step'], 'Synergy display does not match tanh(omega * U)')
 if errors:
     raise SystemExit('\n'.join(errors))
 files = [p for p in ROOT.rglob('*') if p.is_file()]

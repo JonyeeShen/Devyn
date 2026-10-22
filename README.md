@@ -8,6 +8,10 @@ Compact training entry for all paper models with one unified configuration cente
 
 **[Project page](https://jonyeeshen.github.io/Devyn/)** · [Website maintenance](website/README.md)
 
+**Junyi Shen · Yasuo Kuniyoshi · Kohei Nakajima**
+
+**Paper (PDF): Coming soon** · **[Code](https://github.com/JonyeeShen/Devyn)** · **BibTeX: Coming soon**
+
 ## What This Provides
 
 - A single reproducibility utility: `./repro.py`
@@ -167,4 +171,6 @@ third-party code under [third_party](third_party) retains its original license.
 
 ## Citation
 
-A citation entry (BibTeX) will be added once the paper preprint is available.
+**Coming soon.** The camera-ready PDF and BibTeX entry will be added here and on the
+[project page](https://jonyeeshen.github.io/Devyn/) when the final version is publicly available.
+For now, see the [NeurIPS paper page](https://neurips.cc/virtual/2026/loc/sydney/poster/151314).
