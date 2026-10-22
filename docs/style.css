@@ -213,7 +213,7 @@ table { width:100%; border-collapse:collapse;  font-variant-numeric:tabular-nums
 th { text-align:right;  font-weight:450; color:var(--muted); padding:12px 8px; border-bottom:1px solid var(--line); }
 td { text-align:right; padding:18px 8px; border-bottom:1px solid var(--line); white-space:nowrap; }
 th:first-child,td:first-child { text-align:left; }
-td:first-child {  font-weight:500; }
+td:first-child { white-space:normal; font-weight:500; }
 td .sd { display:block;  color:var(--muted); }
 tr.ours td { background:#302a20; color:#e4c78f; }
 .takeaway {  line-height:1.7; color:#d4ced9; padding:20px 0 16px; }

@@ -2,6 +2,7 @@
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const theme=getComputedStyle(document.documentElement),themeColor=name=>theme.getPropertyValue(name).trim();
 const C={ours:themeColor('--accent'),sac:themeColor('--blue'),dynsyn:themeColor('--clay'),lattice:themeColor('--lattice'),grid:'#36363d',text:'#aaaab3'};
+const methodLabel=name=>name==='Devyn'?'Ours':(['SAC','E2E SAC'].includes(name)?'Full-action SAC':name);
 const ns='http://www.w3.org/2000/svg';
 function el(t,a,text){const e=document.createElementNS(ns,t);Object.entries(a).forEach(([k,v])=>e.setAttribute(k,v));if(text!==undefined)e.textContent=text;return e;}
 function active(buttons,current){buttons.forEach(b=>{b.classList.toggle('active',b===current);b.setAttribute('aria-pressed',String(b===current));});}
@@ -11,7 +12,7 @@ function diagram(mode){const svg=$('#method-diagram');svg.replaceChildren();cons
  left.forEach((y,i)=>svg.append(el('circle',{cx:115,cy:y,r:dev?12:8,fill:dev?['#d8b46a','#a7b6cb','#cac9c4'][i]:C.sac,stroke:'#303036','stroke-width':4})));
  right.forEach((y,i)=>svg.append(el('circle',{cx:490,cy:y,r:7,fill:dev?['#d8b46a','#a7b6cb','#cac9c4'][i%3]:C.sac,stroke:'#303036','stroke-width':2})));
  $('#diagram-labels').innerHTML=dev?'<span>Latent controls</span><span>Developing<br>decoder</span><span>Actuators</span>':'<span>Policy outputs</span><span></span><span>Actuators</span>';
- $('#diagram-flow').textContent=dev?'s → z → a':'s → a';$('.decoder-caption').hidden=!dev;svg.setAttribute('aria-label',dev?'Compact controls connected to many actuators through a learned synergy decoder':'One full-action policy output for each actuator');$('#diagram-title').textContent=dev?'Latent-action policy':'Full-action policy';$('#diagram-description').textContent=dev?'The policy and decoder are learned jointly.':'A separate policy output for every actuator.';if(window.updateDecoderMath)window.updateDecoderMath(dev);
+ $('#diagram-flow').textContent=dev?'s → z → a':'s → a';$('.decoder-caption').hidden=!dev;svg.setAttribute('aria-label',dev?'Compact controls connected to many actuators through a learned synergy decoder':'One full-action policy output for each actuator');$('#diagram-title').textContent=dev?'Latent-action policy':'Full-action SAC';$('#diagram-description').textContent=dev?'The policy and decoder are learned jointly.':'A separate policy output for every actuator.';if(window.updateDecoderMath)window.updateDecoderMath(dev);
 }
 $$('[data-mode]').forEach(b=>b.onclick=()=>{active($$('[data-mode]'),b);diagram(b.dataset.mode);});diagram('devyn');
 const hero=$('#hero-video'),hb=$('#hero-play');
@@ -34,7 +35,7 @@ function chart(svg,series,xmax,opts={}){svg._chartArgs=[series,xmax,opts];svg.da
 let results,transferData;
 let chartResizeTimer;
 window.addEventListener('resize',()=>{clearTimeout(chartResizeTimer);chartResizeTimer=setTimeout(()=>{$$('[data-chart]').forEach(svg=>chart(svg,...svg._chartArgs));if(transferData)drawTransfer();},120);});
-function testTable(step){const rows=results.test.filter(r=>r.global_steps===step),keys=['success_percent','coverage_percent','empjpe_mm'];$('#test-table').innerHTML='<table><caption class="sr-only">test108 at '+step/1e6+'M transitions</caption><thead><tr><th>Method</th><th>Success ↑<br>%</th><th>Coverage ↑<br>%</th><th>EMPJPE ↓<br>mm</th></tr></thead><tbody>'+rows.map(r=>'<tr class="'+(r.method==='Devyn'?'ours':'')+'"><td>'+(r.method==='Devyn'?'Ours':r.method)+'</td>'+keys.map(k=>'<td>'+r[k+'_mean'].toFixed(2)+'<span class="sd">± '+r[k+'_sample_sd'].toFixed(2)+'</span></td>').join('')+'</tr>').join('')+'</tbody></table>';$('#test-takeaway').textContent=step===1e6?'At 1M: +7.21 percentage points of motion coverage and 12.29 mm lower tracking error than E2E SAC.':'At 3M: 4.11 mm lower mean tracking error than E2E SAC.';}
+function testTable(step){const rows=results.test.filter(r=>r.global_steps===step),keys=['success_percent','coverage_percent','empjpe_mm'];$('#test-table').innerHTML='<table><caption class="sr-only">test108 at '+step/1e6+'M transitions</caption><thead><tr><th>Method</th><th>Success ↑<br>%</th><th>Coverage ↑<br>%</th><th>EMPJPE ↓<br>mm</th></tr></thead><tbody>'+rows.map(r=>'<tr class="'+(r.method==='Devyn'?'ours':'')+'"><td>'+methodLabel(r.method)+'</td>'+keys.map(k=>'<td>'+r[k+'_mean'].toFixed(2)+'<span class="sd">± '+r[k+'_sample_sd'].toFixed(2)+'</span></td>').join('')+'</tr>').join('')+'</tbody></table>';$('#test-takeaway').textContent=step===1e6?'At 1M: +7.21 percentage points of motion coverage and 12.29 mm lower tracking error than Full-action SAC.':'At 3M: 4.11 mm lower mean tracking error than Full-action SAC.';}
 $$('[data-step]').forEach(b=>b.onclick=()=>{if(results){active($$('[data-step]'),b);testTable(+b.dataset.step);}});
 fetch('assets/results.json').then(r=>r.json()).then(d=>{results=d;chart($('#training-chart'),['dynsyn','e2e','ours'].map(k=>({color:{ours:C.ours,e2e:C.sac,dynsyn:C.dynsyn}[k],points:d.training[k].map(p=>({...p,x:p.x*1e6}))})),3e6,{xlabel:'Global transitions'});testTable(1e6);}).catch(()=>$('#test-table').textContent='Results are temporarily unavailable.');
 fetch('assets/main-curves.json?v=3').then(r=>r.json()).then(d=>{
@@ -45,7 +46,7 @@ fetch('assets/main-curves.json?v=3').then(r=>r.json()).then(d=>{
   h.textContent={'g1-run-v0':'G1 · Run','h1-run-v0':'H1 · Run','OstrichRun-v1':'Ostrich · Run','myoLegStairTerrainWalk-v0':'MyoLeg · Stair terrain'}[t.task];
   label.className='plot-unit';label.textContent=divisor===1000?'Episode return (×10³)':'Episode return';
   const names=Object.keys(styles).filter(n=>t.methods[n]);
-  const svg=el('svg',{viewBox:'0 0 700 370',role:'img','aria-label':h.textContent+' training returns: '+names.join(', ')+', five seeds each','data-task-name':t.task});
+  const svg=el('svg',{viewBox:'0 0 700 370',role:'img','aria-label':h.textContent+' training returns: '+names.map(methodLabel).join(', ')+', five seeds each','data-task-name':t.task});
   section.append(h,label,svg);$('#main-plots').append(section);
   chart(svg,names.map(n=>({...styles[n],method:n,width:styles[n].width||2.1,bandOpacity:.09,points:t.steps.map((x,i)=>({x,mean:t.methods[n].mean[i],sd:t.methods[n].std[i]}))})),t.configured_plot_budget,{divisor,...(t.task==='myoLegStairTerrainWalk-v0'?{yMax:12,yTick:3}:{})});
  });
