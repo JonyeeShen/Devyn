@@ -7,7 +7,7 @@ serves the published files; no separate server, Node build, or paid domain is re
 
 ## Update the website
 
-1. Edit `docs/index.html`, `docs/style.css`, `docs/app.js`, or the media/data under `docs/assets/`.
+1. Edit `docs/index.html`, `docs/style.css`, `docs/typography.css`, `docs/app.js`, or the media/data under `docs/assets/`.
 2. Run `python3 scripts/check_project_page.py` and `node --check docs/app.js`.
 3. Commit and push to `main`. The **Deploy project page** workflow publishes changes automatically.
 
@@ -43,6 +43,7 @@ The public `docs/` files can be maintained directly after import.
 - The teaser has a chapter index in `docs/assets/teaser-chapters.json`.
 - Plot data and synergy matrices are static JSON files under `docs/assets/`.
 - KaTeX is vendored under `docs/vendor/katex/`, including its license.
-- DM Sans is requested from Google Fonts, with system-font fallbacks.
+- Source Sans 3 is self-hosted under `docs/vendor/source-sans-3/`, with its SIL Open Font License and upstream provenance. KaTeX retains its own math fonts.
+- `docs/typography.css` owns the page's type scale; `style.css` handles layout and color. Keep new component text on the shared type tokens.
 
 GitHub Pages documentation: https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages

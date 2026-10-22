@@ -1,0 +1,92 @@
+@font-face {
+  font-family:'Source Sans 3';
+  src:url('vendor/source-sans-3/SourceSans3VF-Upright.woff2') format('woff2');
+  font-style:normal;
+  font-weight:200 900;
+  font-display:swap;
+}
+
+/* One type scale for the page. Plot labels use actual screen pixels in app.js. */
+:root {
+  --font-text:'Source Sans 3','Helvetica Neue',Arial,sans-serif;
+  --text-title:2.75rem;
+  --text-section:2rem;
+  --text-subsection:1.5rem;
+  --text-body:1.125rem;
+  --text-control:1rem;
+  --text-caption:.9375rem;
+  --text-axis:.875rem;
+  --text-math:1.1875rem;
+}
+html { font-size:100%; }
+body { font-family:var(--font-text); font-size:var(--text-body); font-weight:400; line-height:1.65; }
+button,input,select { font-family:inherit; }
+h1,h2,h3 { font-weight:600; }
+.hero h1 { font-size:var(--text-title); line-height:1.16; letter-spacing:-.022em; }
+.section-head h2 { font-size:var(--text-section); line-height:1.25; letter-spacing:-.016em; }
+h3,.principles h3,.transfer-copy h3,.comparison-heading h3,
+.main-plots h3,.plot-heading h3,.transfer-plot-heading h3 {
+  font-size:var(--text-subsection); line-height:1.3; letter-spacing:-.012em;
+}
+.wordmark { font-size:1.75rem; font-weight:650; letter-spacing:-.02em; }
+.venue,.paper-authors,.paper-affiliation { font-size:var(--text-body); line-height:1.6; }
+.venue { font-size:var(--text-control); }
+.hero-intro,.hero-finding p,.idea-copy p,.principles article>p:not(.formula-caption),
+.section-head>p,.transfer-copy>p:not(.small-note),.takeaway {
+  font-size:var(--text-body); line-height:1.65; letter-spacing:normal;
+}
+.hero-intro,.hero-finding,.section-head>p { max-width:72ch; }
+nav,.nav-paper,.button,.button.small,.text-link,.text-button,
+.resource-link,.tabs button,.diagram-controls button,.switch button {
+  font-size:var(--text-control); line-height:1.4;
+}
+.resource-link small,.teaser-chapters button,.media-caption,.gallery-grid .episode-note,
+.gallery-grid figcaption span,.video-label,.video-status,.diagram-label,
+.diagram-node-labels,.diagram-panel>p,.math-notation,.formula-caption,
+.regularizer-figure figcaption,.evolution-toolbar>span,.heatmap-pair figcaption span,
+.evolution-bottom>.small-note,.matrix-key,#evolution-ticks,.sparsity-readout,
+.sparsity-readout small,.legend,.small-note,.plot-unit,.transfer-stages,
+#transfer-gain,.plot-heading>span,footer,footer>span {
+  font-size:var(--text-caption); line-height:1.6;
+}
+.gallery-grid figcaption strong,.heatmap-pair figcaption strong {
+  font-size:var(--text-body); font-weight:600; line-height:1.45;
+}
+.sparsity-readout strong,.timeline output { font-size:var(--text-subsection); font-weight:500; }
+.math-notation summary { font-size:var(--text-control); }
+.formula,.decoder-math,.math-notation [data-equation] { font-size:var(--text-math); }
+.katex { font-size:1.08em; }
+.formula { min-height:238px; }
+.formula-caption { min-height:48px; }
+.math-notation .katex-display { margin:1em 0; }
+table { font-size:var(--text-body); }
+th,td .sd { font-size:var(--text-caption); font-weight:400; }
+td:first-child { font-size:var(--text-control); font-weight:600; }
+.main-plots svg text,#training-chart text,#transfer-chart text,#hoyer-example text {
+  font-family:var(--font-text); font-size:var(--text-axis); font-weight:400;
+}
+#anchor-example text { font-family:var(--font-text); font-size:calc(var(--text-axis) * var(--anchor-text-scale, 1)); }
+table,svg text,.sparsity-readout,#evolution-ticks { font-variant-numeric:tabular-nums; }
+.media-caption { flex-wrap:wrap; gap:4px 20px; }
+.plot-heading { flex-wrap:wrap; }
+.regularizer-figure figcaption { max-width:65ch; }
+.test-panel { overflow-x:auto; }
+@media(max-width:760px) {
+  :root {
+    --text-title:2rem;
+    --text-section:1.75rem;
+    --text-subsection:1.375rem;
+    --text-body:1.0625rem;
+    --text-math:1.125rem;
+  }
+  .hero h1 { line-height:1.18; }
+  .wordmark { font-size:1.625rem; }
+  .project-page header nav { font-size:var(--text-control); }
+  .formula { min-height:0; }
+  .formula-caption { min-height:0; }
+  .heatmap-pair figcaption { display:block; }
+  .heatmap-pair figcaption span { display:block; margin-top:4px; }
+  .legend { flex-wrap:wrap; gap:8px 18px; }
+  .video-label { flex-wrap:wrap; row-gap:4px; }
+  .sparsity-readout small { display:block; margin-left:0; }
+}

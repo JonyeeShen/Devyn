@@ -42,7 +42,7 @@ def main():
     def save(name, value):
         (dest / 'assets' / name).write_text(json.dumps(value, ensure_ascii=False, separators=(',', ':'))+'\n')
 
-    for filename in ['index.html', 'style.css', 'app.js', 'math.js']:
+    for filename in ['index.html', 'style.css', 'typography.css', 'app.js', 'math.js']:
         text = (source / filename).read_text()
         for old, new in MEDIA.items():
             text = text.replace(old, new)
@@ -69,6 +69,7 @@ def main():
                 shutil.copy2(src, dest / 'assets' / (new+extension))
     shutil.copy2(source / 'assets/mark.svg', dest / 'assets/mark.svg')
     shutil.copytree(source / 'vendor/katex', dest / 'vendor/katex', dirs_exist_ok=True)
+    shutil.copytree(source / 'vendor/source-sans-3', dest / 'vendor/source-sans-3', dirs_exist_ok=True)
     (dest / '.nojekyll').touch()
 
     results = read('results.json')

@@ -1,0 +1,4 @@
+Source Sans 3, unmodified upright variable WOFF2.
+Upstream: https://github.com/adobe-fonts/source-sans
+Commit: 87b37a2daaed80fcb8e8ccb0085c4d72ddade12e
+License: SIL Open Font License 1.1; see LICENSE.txt.
