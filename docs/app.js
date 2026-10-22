@@ -40,14 +40,16 @@ fetch('assets/main-curves.json?v=2').then(r=>r.json()).then(d=>{const order=['g1
 let synergy,selectedRun=0,evolutionTimer=null;
 function drawHoyerExample(data){
  const svg=$('#hoyer-example');if(!svg)return;
- const run=data.runs.find(r=>r.task==='OstrichRun-v1'),W=Math.max(280,Math.round(svg.getBoundingClientRect().width)),H=170,L=4,R=4;
+ const run=data.runs.find(r=>r.task==='OstrichRun-v1'),W=Math.max(280,Math.round(svg.getBoundingClientRect().width)),H=356,L=26,R=4;
  svg.replaceChildren();svg.setAttribute('viewBox','0 0 '+W+' '+H);
- [run.frames[0],run.frames.at(-1)].forEach((frame,k)=>{
-  const v=frame.matrix.map(row=>row[0]),norm=Math.hypot(...v),top=22+k*82,base=top+48,cw=(W-L-R)/v.length,color=k?C.ours:C.sac;
-  svg.append(el('text',{x:L,y:top-7,fill:C.text,'font-size':13},k?(frame.step/1e6)+'M steps':'Initialization'));
+ [0,1000000,3000000,10000000].map(step=>run.frames.find(f=>f.step===step)).forEach((frame,k)=>{
+  const v=frame.elementwise_proxy.map(row=>row[0]),top=22+k*82,base=top+24,cw=(W-L-R)/v.length;
+  svg.append(el('text',{x:L,y:top-7,fill:C.text,'font-size':13},frame.step?(frame.step/1e6)+'M steps':'Initialization'));
   svg.append(el('line',{x1:L,x2:W-R,y1:base,y2:base,stroke:C.grid}));
-  v.forEach((value,i)=>{const height=Math.abs(value)/norm*48,bar=el('rect',{x:L+i*cw,y:base-height,width:Math.max(.7,cw*.75),height,fill:color});bar.append(el('title',{},'Actuator '+(i+1)+': '+(Math.abs(value)/norm).toFixed(4)));svg.append(bar);});
+  [1,0,-1].forEach(value=>svg.append(el('text',{x:L-7,y:base-value*22+3,fill:C.text,'font-size':10,'text-anchor':'end'},value>0?'+1':value<0?'−1':'0')));
+  v.forEach((value,i)=>{const height=Math.abs(value)*22,bar=el('rect',{x:L+i*cw,y:value>=0?base-height:base,width:Math.max(.7,cw*.75),height,fill:value<0?C.sac:C.ours,'data-hoyer-step':frame.step,'data-actuator':i});bar.append(el('title',{},'Actuator '+(i+1)+': '+value.toFixed(4)));svg.append(bar);});
  });
+ svg.append(el('text',{x:(W+L-R)/2,y:350,fill:C.text,'font-size':12,'text-anchor':'middle'},'Actuator index (original order)'));
 }
 function stopEvolution(){clearInterval(evolutionTimer);evolutionTimer=null;$('#evolution-play').textContent='Play evolution ▷';$('#evolution-play').setAttribute('aria-label','Play synergy evolution');}
 function heatmap(canvas,matrix,max){const ctx=canvas.getContext('2d'),w=canvas.width,h=canvas.height,rows=matrix.length,cols=matrix[0].length,cw=w/cols,ch=h/rows,zero=[35,35,40],neg=[138,155,183],pos=[217,183,117];ctx.clearRect(0,0,w,h);matrix.forEach((row,i)=>row.forEach((v,j)=>{const amount=Math.min(1,Math.abs(v)/max),to=v<0?neg:pos;ctx.fillStyle='rgb('+zero.map((c,k)=>Math.round(c+(to[k]-c)*amount)).join(',')+')';ctx.fillRect(j*cw,i*ch,Math.ceil(cw),Math.ceil(ch));}));}
