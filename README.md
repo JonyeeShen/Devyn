@@ -10,6 +10,8 @@ Compact training entry for all paper models with one unified configuration cente
 
 **Junyi Shen · Yasuo Kuniyoshi · Kohei Nakajima**
 
+The University of Tokyo
+
 **Paper (PDF): Coming soon** · **[Code](https://github.com/JonyeeShen/Devyn)** · **BibTeX: Coming soon**
 
 ## What This Provides
