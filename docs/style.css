@@ -183,9 +183,6 @@ input[type=range] { width:100%; accent-color:var(--accent); cursor:pointer; }
 .legend>.dynsyn:before { background:var(--clay); }
 .legend>.lattice:before { background:var(--lattice); }
 .rl-legend { flex-wrap:wrap; gap:10px 22px; }
-.rl-legend>.sac:before { height:0; background:none; border-top:3px dashed var(--blue); }
-.rl-legend>.dynsyn:before { height:0; background:none; border-top:3px dotted var(--clay); }
-.rl-legend>.lattice:before { background:linear-gradient(to right,var(--lattice) 0 45%,transparent 45% 60%,var(--lattice) 60% 70%,transparent 70% 85%,var(--lattice) 85%); }
 .small-note { color:var(--muted);  line-height:1.7; }
 .section-head .small-note { margin-top:12px; }
 .main-plots { display:grid; grid-template-columns:1fr 1fr; gap:40px 48px; margin-bottom:32px; }

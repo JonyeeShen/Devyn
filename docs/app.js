@@ -39,7 +39,7 @@ $$('[data-step]').forEach(b=>b.onclick=()=>{if(results){active($$('[data-step]')
 fetch('assets/results.json').then(r=>r.json()).then(d=>{results=d;chart($('#training-chart'),['dynsyn','e2e','ours'].map(k=>({color:{ours:C.ours,e2e:C.sac,dynsyn:C.dynsyn}[k],points:d.training[k].map(p=>({...p,x:p.x*1e6}))})),3e6,{xlabel:'Global transitions'});testTable(1e6);}).catch(()=>$('#test-table').textContent='Results are temporarily unavailable.');
 fetch('assets/main-curves.json?v=3').then(r=>r.json()).then(d=>{
  const order=['g1-run-v0','OstrichRun-v1','h1-run-v0','myoLegStairTerrainWalk-v0'];
- const styles={SAC:{color:C.sac,dash:'8 5'},DynSyn:{color:C.dynsyn,dash:'3 4'},Lattice:{color:C.lattice,dash:'10 4 2 4'},Devyn:{color:C.ours,width:3}};
+ const styles={SAC:{color:C.sac},DynSyn:{color:C.dynsyn},Lattice:{color:C.lattice},Devyn:{color:C.ours,width:3}};
  d.tasks.sort((a,b)=>order.indexOf(a.task)-order.indexOf(b.task)).forEach(t=>{
   const section=document.createElement('article'),h=document.createElement('h3'),label=document.createElement('div'),divisor=['OstrichRun-v1','myoLegStairTerrainWalk-v0'].includes(t.task)?1000:1;
   h.textContent={'g1-run-v0':'G1 · Run','h1-run-v0':'H1 · Run','OstrichRun-v1':'Ostrich · Run','myoLegStairTerrainWalk-v0':'MyoLeg · Stair terrain'}[t.task];
