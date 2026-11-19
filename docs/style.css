@@ -224,6 +224,13 @@ footer { border-top:1px solid var(--line); padding:28px 0; display:flex; align-i
 footer .wordmark {  }
 footer .wordmark img { width:28px; height:28px; }
 footer>span { color:var(--muted);  }
+
+.citation { padding:32px 0 40px; }
+.citation-heading { display:flex; align-items:center; justify-content:space-between; gap:16px; }
+.citation-heading h2 { font-size:var(--text-section); }
+.citation pre { margin:16px 0 8px; padding:16px; border:1px solid var(--line); border-radius:6px; background:var(--panel); white-space:pre-wrap; overflow-wrap:anywhere; }
+.citation [role="status"] { min-height:1.5em; }
+.citation [hidden] { display:none; }
 .skip { position:fixed; top:-100px; left:12px; padding:10px; z-index:9; color:var(--paper); background:var(--accent); }
 .skip:focus { top:12px; }
 .sr-only { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; }

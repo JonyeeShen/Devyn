@@ -1,5 +1,25 @@
 'use strict';
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+
+const copyBibtex = $('#copy-bibtex');
+if (copyBibtex) {
+  const entry = $('#bibtex-entry');
+  const status = $('#bibtex-status');
+  copyBibtex.hidden = false;
+  copyBibtex.addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(entry.textContent);
+      status.textContent = 'BibTeX copied.';
+    } catch {
+      const range = document.createRange();
+      range.selectNodeContents(entry);
+      const selection = window.getSelection();
+      selection.removeAllRanges();
+      selection.addRange(range);
+      status.textContent = 'BibTeX selected. Use your device’s copy command.';
+    }
+  });
+}
 const theme=getComputedStyle(document.documentElement),themeColor=name=>theme.getPropertyValue(name).trim();
 const C={ours:themeColor('--accent'),sac:themeColor('--blue'),dynsyn:themeColor('--clay'),lattice:themeColor('--lattice'),grid:'#36363d',text:'#aaaab3'};
 const methodLabel=name=>name==='Devyn'?'Ours':(['SAC','E2E SAC'].includes(name)?'Full-action SAC':name);
