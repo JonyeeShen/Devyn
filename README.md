@@ -6,13 +6,13 @@ This repository contains the code used to reproduce the results from the NeurIPS
 
 Compact training entry for all paper models with one unified configuration center.
 
-**[Project page](https://jonyeeshen.github.io/Devyn/)** · [Website maintenance](website/README.md)
+**[Project page](https://jonyeeshen.github.io/Devyn/)**
 
 **Junyi Shen · Yasuo Kuniyoshi · Kohei Nakajima**
 
 The University of Tokyo
 
-**Paper (PDF): Coming soon** · **[Code](https://github.com/JonyeeShen/Devyn)** · **BibTeX: Coming soon**
+**[Paper (PDF)](https://openreview.net/pdf?id=bPifcfpxsk)** · **[Code](https://github.com/JonyeeShen/Devyn)** · **[BibTeX](#citation)**
 
 ## What This Provides
 
@@ -173,6 +173,14 @@ third-party code under [third_party](third_party) retains its original license.
 
 ## Citation
 
-**Coming soon.** The camera-ready PDF and BibTeX entry will be added here and on the
-[project page](https://jonyeeshen.github.io/Devyn/) when the final version is publicly available.
-For now, see the [NeurIPS paper page](https://neurips.cc/virtual/2026/loc/sydney/poster/151314).
+[Download the BibTeX entry](https://jonyeeshen.github.io/Devyn/devyn.bib).
+
+```bibtex
+@inproceedings{shen2026highdimensional,
+  title={High-Dimensional Robotic Reinforcement Learning with Developing Synergies},
+  author={Junyi Shen and Yasuo Kuniyoshi and Kohei Nakajima},
+  booktitle={The Fortieth Annual Conference on Neural Information Processing Systems},
+  year={2026},
+  url={https://openreview.net/forum?id=bPifcfpxsk}
+}
+```

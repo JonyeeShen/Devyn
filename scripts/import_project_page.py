@@ -68,6 +68,8 @@ def main():
             if src.exists():
                 shutil.copy2(src, dest / 'assets' / (new+extension))
     shutil.copy2(source / 'assets/mark.svg', dest / 'assets/mark.svg')
+    if (source / 'devyn.bib').is_file():
+        shutil.copy2(source / 'devyn.bib', dest / 'devyn.bib')
     shutil.copytree(source / 'vendor/katex', dest / 'vendor/katex', dirs_exist_ok=True)
     shutil.copytree(source / 'vendor/source-sans-3', dest / 'vendor/source-sans-3', dirs_exist_ok=True)
     (dest / '.nojekyll').touch()
